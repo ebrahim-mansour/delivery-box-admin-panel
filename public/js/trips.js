@@ -16,23 +16,43 @@ const historyElement = document.getElementById("trips");
 // Get a reference to the database service
 const tripsRef = firebase.database().ref().child('History');
 tripsRef.on('child_added', trip => {
-    console.log(trip.val());
-    
-    // Trip id
-    const tripElement = document.createElement('div')
-    tripElement.id = trip.key;
+  console.log(trip.val());
 
-    // Customer data
-    firebase.database().ref().child(`Users/Customers/${trip.val().customer}`).once('value', customer => {
-      // Customer name and phone
-      const customerName = document.createElement('p');
-      customerName.innerText = customer.val().name;
-      const customerPhone = document.createElement('p');
-      customerPhone.innerText = customer.val().phone;
+  // Trip id
+  const tripElement = document.createElement('div')
+  tripElement.id = trip.key;
 
-      tripElement.appendChild(customerName)
-      tripElement.appendChild(customerPhone)
-    });
+  // Trip meta data
+  const destination = document.createElement('p');
+  destination.innerText = trip.val().destination;
+
+  const price = document.createElement('p');
+  price.innerText = trip.val().price;
+
+  const rating = document.createElement('p');
+  rating.innerText = trip.val().rating;
+
+  const time = document.createElement('p');
+  time.innerText = trip.val().timestamp;
+
+  if (price.innerText != "undefined") {
+    tripElement.appendChild(price);
+  }
+
+  tripElement.appendChild(destination);
+  tripElement.appendChild(time);
+  tripElement.appendChild(rating);
+
+  // Customer data
+  firebase.database().ref().child(`Users/Customers/${trip.val().customer}`).once('value', customer => {
+    // Customer name and phone
+    const customerName = document.createElement('p');
+    customerName.innerText = customer.val().name;
+    const customerPhone = document.createElement('p');
+    customerPhone.innerText = customer.val().phone;
+
+    tripElement.appendChild(customerName)
+    tripElement.appendChild(customerPhone)
 
     // Driver data
     firebase.database().ref().child(`Users/Riders/${trip.val().driver}`).once('value', driver => {
@@ -49,24 +69,10 @@ tripsRef.on('child_added', trip => {
       tripElement.appendChild(driverCar)
     });
 
-    // Trip meta data
-    const destination = document.createElement('p');
-    destination.innerText = trip.val().destination;
-
-    const price = document.createElement('p');
-    price.innerText = trip.val().price;
-    
-    const time = document.createElement('p');
-    time.innerText = trip.val().timestamp;
-
-    tripElement.appendChild(destination);
-    if (price.innerText != "undefined") {
-      tripElement.appendChild(price);
-    }
-    tripElement.appendChild(time);
-
     // Adding trip data to the history
     historyElement.append(tripElement)
+
+  });
 
 });
 
@@ -88,7 +94,7 @@ tripsRef.once('value', snap => {
   const trips = snapshotToArray(snap);
   trips.forEach(trip => {
     console.log(trip);
-    
+
     // Trip id
     const tripElement = document.createElement('div')
     tripElement.id = trip.key;
@@ -126,7 +132,7 @@ tripsRef.once('value', snap => {
 
     const price = document.createElement('p');
     price.innerText = trip.price;
-    
+
     const time = document.createElement('p');
     time.innerText = trip.timestamp;
 
@@ -136,7 +142,7 @@ tripsRef.once('value', snap => {
 
     // Adding trip data to the history
     historyElement.append(tripElement)
-        
+
   });
 })
 */
