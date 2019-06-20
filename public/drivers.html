@@ -3,13 +3,41 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Drivers</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <title>Our Drivers</title>
+
+  <!-- Bootstrap  -->
+  <link rel="stylesheet" href="css/bootstrap.css">
+
+  <!-- Theme style  -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
 
 </head>
 
 <body>
+
+  <div class="gtco-loader"></div>
+
+  <nav class="gtco-nav" role="navigation" style="background-image:url(images/img_bg_1.jpg); position:fixed ">
+    <div class="gtco-container">
+      <div class="row">
+        <div class="col-xs-2">
+          <div id="gtco-logo"><a href="index.html">Deliver Box</a></div>
+        </div>
+        <div class="col-xs-8 text-center menu-1">
+          <ul>
+            <li class="btn-cta"><a href="trips.html"><span>Trips History</span></a></li>
+            <li class="btn-cta"><a href="drivers.html"><span>Our Drivers</span></a></li>
+            <li class="btn-cta"><a href="clients.html"><span>Our Clients</span></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!--  -->
   <div class="container text-center">
 
     <a href="/">Administration</a>
@@ -22,7 +50,25 @@
     </section>
 
   </div>
+  <!--  -->
 
+  <!-- ملهاش لازمه يس سيبها مكانها علشان ظابطه الشكل-->
+  <div class="gtco-container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2 text-center">
+        <div class="display-t">
+          <div class="display-tc animate-box" data-animate-effect="fadeIn">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer id="gtco-footer" role="contentinfo">
+
+  </footer>
+
+  <!--  -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
     crossorigin="anonymous"></script>
@@ -32,8 +78,27 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
+  <!--  -->
+
+  <!-- jQuery -->
+  <script src="js/jquery.min.js"></script>
+
+  <!-- jQuery Easing -->
+  <script src="js/jquery.waypoints.min.js"></script>
+
+  <!-- Carousel -->
+  <script src="js/owl.carousel.min.js"></script>
+
+  <!-- Main -->
+  <script src="js/main.js"></script>
+
+  <!-- Moment for time -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+
+  <!-- Fire base initiation -->
   <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
   <script src="js/drivers.js"></script>
+
 </body>
 
 </html>
