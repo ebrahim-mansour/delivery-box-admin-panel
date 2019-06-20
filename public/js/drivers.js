@@ -11,7 +11,7 @@ const config = {
 firebase.initializeApp(config);
 
 // Get elements
-const driversElement = document.getElementById("drivers");
+const driversElement = document.querySelector("#drivers .container .row");
 
 // Get a reference to the database service
 const drivers = firebase.database().ref('Users/Riders');
@@ -19,8 +19,16 @@ const drivers = firebase.database().ref('Users/Riders');
 drivers.on('child_added', driver => {
   let driverElement = document.createElement('div');
   driverElement.id = driver.key;
+  driverElement.className = "col-lg-4 col-md-4 wow text-center"
 
-  // Driver name, phone, and image
+  // Driver image
+  const driverImage = document.createElement('img');
+  driverImage.src = driver.val().profileImageUrl;
+  driverImage.className = `driverImage img-fluid responsive img-circle`;
+  driverImage.width = 200;
+  driverImage.height = 200;
+
+  // Name, phone, average rate, and delete button
   const driverName = document.createElement('p');
   driverName.innerText = `name: ${driver.val().name}`;
   driverName.className = `driverName`;
@@ -29,15 +37,9 @@ drivers.on('child_added', driver => {
   driverPhone.innerText = `phone: ${driver.val().phone}`;
   driverPhone.className = `driverPhone`;
 
-  const driverImage = document.createElement('img');
-  driverImage.src = driver.val().profileImageUrl;
-  driverImage.className = `driverImage`;
-  driverImage.width = 100;
-  driverImage.height = 100;
-
+  driverElement.appendChild(driverImage);
   driverElement.appendChild(driverName);
   driverElement.appendChild(driverPhone);
-  driverElement.appendChild(driverImage);
 
   // Calculating average rate if there is a history
   if (driver.val().rating) {
@@ -62,7 +64,7 @@ drivers.on('child_added', driver => {
 
   // Delete driver button
   let deleteDriverButton = document.createElement('button');
-  deleteDriverButton.className = `${driver.key}`;
+  deleteDriverButton.className = `${driver.key} btn btn-danger`;
   deleteDriverButton.innerText = `Remove Driver`;
 
   driverElement.appendChild(deleteDriverButton);
@@ -79,14 +81,14 @@ drivers.on('child_added', driver => {
 });
 
 drivers.on('child_changed', driver => {
-  const driverName = document.getElementById(driver.key).children[0]
+  const driverImage = document.getElementById(driver.key).children[0];
+  driverImage.src = driver.val().profileImageUrl;
+
+  const driverName = document.getElementById(driver.key).children[1];
   driverName.innerText = `name: ${driver.val().name}`;
 
-  const driverPhone = document.getElementById(driver.key).children[1];
+  const driverPhone = document.getElementById(driver.key).children[2];
   driverPhone.innerHTML = `phone: ${driver.val().phone}`;
-
-  const driverImage = document.getElementById(driver.key).children[2];
-  driverImage.src = driver.val().profileImageUrl;
 });
 
 drivers.on('child_removed', driver => {

@@ -11,7 +11,7 @@ const config = {
 firebase.initializeApp(config);
 
 // Get elements
-const clientsElement = document.getElementById("clients");
+const clientsElement = document.querySelector("#clients .container .row");
 
 // Get a reference to the database service
 const clients = firebase.database().ref('Users/Customers');
@@ -19,8 +19,16 @@ const clients = firebase.database().ref('Users/Customers');
 clients.on('child_added', client => {
   let clientElement = document.createElement('div');
   clientElement.id = client.key;
+  clientElement.className = "col-lg-4 col-md-4 wow text-center"
 
-  // client name, phone, and image
+  // Client image
+  const clientImage = document.createElement('img');
+  clientImage.src = client.val().profileImageUrl;
+  clientImage.className = `clientImage img-fluid responsive img-circle`;
+  clientImage.width = 200;
+  clientImage.height = 200;
+
+  // Name, phone, and delete button
   const clientName = document.createElement('p');
   clientName.innerText = `name: ${client.val().name}`;
   clientName.className = `clientName`;
@@ -29,15 +37,9 @@ clients.on('child_added', client => {
   clientPhone.innerText = `phone: ${client.val().phone}`;
   clientPhone.className = `clientPhone`;
 
-  const clientImage = document.createElement('img');
-  clientImage.src = client.val().profileImageUrl;
-  clientImage.className = `clientImage`;
-  clientImage.width = 100;
-  clientImage.height = 100;
-
+  clientElement.appendChild(clientImage);
   clientElement.appendChild(clientName);
   clientElement.appendChild(clientPhone);
-  clientElement.appendChild(clientImage);
 
   // Calculating number of trips done by the client
   if (client.val().history) {
@@ -45,8 +47,11 @@ clients.on('child_added', client => {
     let tripsArr = Object.values(tripsObj);
 
     let numberOfTripsElement = document.createElement('p');
-    numberOfTripsElement.innerText = `Number of trips completed: ${tripsArr.length}`;
-    
+    numberOfTripsElement.innerText = `Number of trips completed: ${tripsArr.length}`;    
+    if (tripsArr.length > 10) {
+      numberOfTripsElement.classList.add('manyTrips');
+    }
+
     clientElement.appendChild(numberOfTripsElement);
   } else {
     let numberOfTripsElement = document.createElement('p');
@@ -54,29 +59,9 @@ clients.on('child_added', client => {
     clientElement.appendChild(numberOfTripsElement);
   }
 
-  /*
-  // Calculating average rate if there is a history
-  if (client.val().rating) {
-    let tripsRate = client.val().rating;
-    let tripRateValues = Object.values(tripsRate)
-    let averageRate = tripRateValues.reduce((a, b) => a + b, 0) / tripRateValues.length
-
-    let averageRateElement = document.createElement('p');
-    averageRateElement.innerText = `Average rate: ${averageRate} in ${tripRateValues.length} trips`;
-    averageRateElement.className = `averageRate`;
-
-    clientElement.appendChild(averageRateElement);
-  } else {
-    let averageRateElement = document.createElement('p');
-    averageRateElement.innerText = "This client has not completed any trips";
-
-    clientElement.appendChild(averageRateElement);
-  }
-  */
-
   // Delete client button
   let deleteClientButton = document.createElement('button');
-  deleteClientButton.className = `${client.key}`;
+  deleteClientButton.className = `${client.key} btn btn-danger`;
   deleteClientButton.innerText = `Remove client`;
 
   clientElement.appendChild(deleteClientButton);
@@ -86,21 +71,21 @@ clients.on('child_added', client => {
   const deleteClientButtons = document.querySelectorAll('button');
   deleteClientButtons.forEach(deleteButton => {
     deleteButton.addEventListener('click', () => {
-      firebase.database().ref(`Users/Customers/${deleteButton.className}`).remove()
+      firebase.database().ref(`Users/Customers/${deleteButton.classList[0]}`).remove()
     })
   })
 
 });
 
 clients.on('child_changed', client => {
-  const clientName = document.getElementById(client.key).children[0]
+  const clientImage = document.getElementById(client.key).children[0];
+  clientImage.src = client.val().profileImageUrl;
+
+  const clientName = document.getElementById(client.key).children[1]
   clientName.innerText = `name: ${client.val().name}`;
 
-  const clientPhone = document.getElementById(client.key).children[1];
+  const clientPhone = document.getElementById(client.key).children[2];
   clientPhone.innerHTML = `phone: ${client.val().phone}`;
-
-  const clientImage = document.getElementById(client.key).children[2];
-  clientImage.src = client.val().profileImageUrl;
 });
 
 clients.on('child_removed', client => {
