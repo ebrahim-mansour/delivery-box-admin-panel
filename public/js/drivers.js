@@ -30,11 +30,11 @@ drivers.on('child_added', driver => {
 
   // Name, phone, average rate, and delete button
   const driverName = document.createElement('p');
-  driverName.innerText = `name: ${driver.val().name}`;
+  driverName.innerText = `name: ${driver.val().name == undefined ? "" : driver.val().name}`;
   driverName.className = `driverName`;
 
   const driverPhone = document.createElement('p');
-  driverPhone.innerText = `phone: ${driver.val().phone}`;
+  driverPhone.innerText = `phone: ${driver.val().phone == undefined ? "" : driver.val().phone}`;
   driverPhone.className = `driverPhone`;
 
   driverElement.appendChild(driverImage);
@@ -74,7 +74,7 @@ drivers.on('child_added', driver => {
   const deleteDriverButtons = document.querySelectorAll('button');
   deleteDriverButtons.forEach(deleteButton => {
     deleteButton.addEventListener('click', () => {
-      firebase.database().ref(`Users/Riders/${deleteButton.className}`).remove()
+      firebase.database().ref(`Users/Riders/${deleteButton.classList[0]}`).remove()
     })
   })
 
@@ -85,10 +85,10 @@ drivers.on('child_changed', driver => {
   driverImage.src = driver.val().profileImageUrl;
 
   const driverName = document.getElementById(driver.key).children[1];
-  driverName.innerText = `name: ${driver.val().name}`;
+  driverName.innerText = `name: ${driver.val().name == undefined ? "" : driver.val().name}`;
 
   const driverPhone = document.getElementById(driver.key).children[2];
-  driverPhone.innerHTML = `phone: ${driver.val().phone}`;
+  driverPhone.innerHTML = `phone: ${driver.val().phone == undefined ? "" : driver.val().phone}`;
 });
 
 drivers.on('child_removed', driver => {

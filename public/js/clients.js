@@ -30,11 +30,11 @@ clients.on('child_added', client => {
 
   // Name, phone, and delete button
   const clientName = document.createElement('p');
-  clientName.innerText = `name: ${client.val().name}`;
+  clientName.innerText = `name: ${client.val().name == undefined ? "" : client.val().name}`;
   clientName.className = `clientName`;
 
   const clientPhone = document.createElement('p');
-  clientPhone.innerText = `phone: ${client.val().phone}`;
+  clientPhone.innerText = `phone: ${client.val().phone == undefined ? "" : client.val().phone}`;
   clientPhone.className = `clientPhone`;
 
   clientElement.appendChild(clientImage);
@@ -82,10 +82,10 @@ clients.on('child_changed', client => {
   clientImage.src = client.val().profileImageUrl;
 
   const clientName = document.getElementById(client.key).children[1]
-  clientName.innerText = `name: ${client.val().name}`;
+  clientName.innerText = `name: ${client.val().name == undefined ? "" : client.val().name}`;
 
   const clientPhone = document.getElementById(client.key).children[2];
-  clientPhone.innerHTML = `phone: ${client.val().phone}`;
+  clientPhone.innerHTML = `phone: ${client.val().phone == undefined ? "" : client.val().phone}`;
 });
 
 clients.on('child_removed', client => {

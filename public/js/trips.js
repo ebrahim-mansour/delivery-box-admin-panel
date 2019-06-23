@@ -46,28 +46,56 @@ tripsRef.on('child_added', trip => {
       tripElement.appendChild(customerName)
       tripElement.appendChild(customerPhone)
 
-      // Adding trip data to the history
-      historyElement.append(tripElement)
-
       // Trip meta data
       const destination = document.createElement('td');
       destination.innerText = trip.val().destination;
 
-      const time = document.createElement('td');
-      time.innerText = moment(trip.val().timestamp).format('MMMM Do YYYY')
+      // const time = document.createElement('td');
+      // time.innerText = moment(trip.val().timestamp).format('MMMM Do YYYY')
 
       const price = document.createElement('td');
-      price.innerText = isNaN(trip.val().price) == false ? Math.ceil(trip.val().price) : trip.val().price;
+      price.innerText = isNaN(trip.val().price) == false ? `${Math.ceil(trip.val().price * 15)} EGP` : '';
 
       const rating = document.createElement('td');
       rating.innerText = trip.val().rating;
 
       tripElement.appendChild(destination);
-      tripElement.appendChild(time);
+      // tripElement.appendChild(time);
       if (price.innerText != "undefined") {
         tripElement.appendChild(price);
       }
       tripElement.appendChild(rating);
+
+      // Adding trip data to the history
+      historyElement.append(tripElement)
+    });
+  });
+});
+
+tripsRef.on('child_changed', trip => {
+  // Driver data
+  firebase.database().ref().child(`Users/Riders/${trip.val().driver}`).once('value', driver => {
+    // Driver name and phone
+    const driverName = document.getElementById(trip.key).children[0]
+    driverName.innerText = driver.val().name;
+    const driverPhone = document.getElementById(trip.key).children[1]
+    driverPhone.innerText = driver.val().phone;
+    const driverCar = document.getElementById(trip.key).children[2]
+    driverCar.innerText = driver.val().car;
+
+    // Customer data
+    firebase.database().ref().child(`Users/Customers/${trip.val().customer}`).once('value', customer => {
+      // Customer name and phone
+      const customerName = document.getElementById(trip.key).children[3]
+      customerName.innerText = customer.val().name;
+      const customerPhone = document.getElementById(trip.key).children[4]
+      customerPhone.innerText = customer.val().phone;
+
+      const price = document.getElementById(trip.key).children[6]
+      price.innerText = isNaN(trip.val().price) == false ? `${Math.ceil(trip.val().price * 15)} EGP` : '';
+
+      const rating = document.getElementById(trip.key).children[7]
+      rating.innerText = trip.val().rating;
     });
   });
 });
